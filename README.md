@@ -1,18 +1,23 @@
-### 実行
+# 実行
 
 
 ## 初回
-# pytorchのインストール(CPU only)
+### pytorchのインストール(CPU only)
 conda install pytorch torchvision torchaudio cpuonly -c pytorch -y
-# 他のライブラリをインストール
+### 他のライブラリをインストール
 pip install -r requirements.txt
-# インストール確認
+### インストール確認
 python - <<EOF
 import torch
 print(torch.__version__)
 print(torch.randn(2,3))
 EOF
-# script実行
+
+## 共通
+### リポジトリをローカルに用意
+git clone https://github.com/Takumu-Komori/ml-from-scratch.git
+cd ml-from-scratch
+### script実行
 python -m src.linear_regression \
   --n 512 \
   --d 3 \
