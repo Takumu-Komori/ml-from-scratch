@@ -1,3 +1,30 @@
+### 実行
+
+
+## 初回
+# pytorchのインストール(CPU only)
+conda install pytorch torchvision torchaudio cpuonly -c pytorch -y
+# 他のライブラリをインストール
+pip install -r requirements.txt
+# インストール確認
+python - <<EOF
+import torch
+print(torch.__version__)
+print(torch.randn(2,3))
+EOF
+# script実行
+python -m src.linear_regression \
+  --n 512 \
+  --d 3 \
+  --noise_std 0.1 \
+  --lr 0.1 \
+  --steps 300 \
+  --seed 42
+
+
+
+
+
 # ml-from-scratch
 python -m src.linear_regression --steps 300 --lr 0.1 --d 3
 
