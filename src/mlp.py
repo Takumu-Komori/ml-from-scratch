@@ -28,7 +28,7 @@ class MLP(torch.nn.Module):
     super().__init__()
     # parameters as learnable tensors
     self.fc1 = torch.nn.Linear(d_in, d_hidden)
-    self.act = torch.nn.Relu()
+    self.act = torch.nn.ReLU()
     self.fc2 = torch.nn.Linear(d_hidden, d_out)
 
   def forward(self, x):
