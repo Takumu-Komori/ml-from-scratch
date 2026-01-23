@@ -16,6 +16,7 @@ EOF
 ## 共通
 ### リポジトリをローカルに用意
 git clone https://github.com/Takumu-Komori/ml-from-scratch.git
+
 cd ml-from-scratch
 ### script実行
 python -m src.linear_regression \
