@@ -69,7 +69,7 @@ def main():
         n=args.n, d=args.d, noise_std=args.noise_std, seed=args.seed
     )
 
-    model = MLP(d_in=args.d, ad_hidden=args.d_hidden, d_out=1)
+    model = MLP(d_in=args.d, d_hidden=args.d_hidden, d_out=1)
     opt = torch.optim.SGD(model.parameters(), lr=args.lr)
 
     log_rows = []
