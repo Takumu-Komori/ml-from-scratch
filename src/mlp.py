@@ -1,3 +1,4 @@
+
 # src/mlp.py
 import argparse
 import os
@@ -24,14 +25,14 @@ def make_synthetic_regression(n: int, d: int, noise_std: float, seed: int):
     return X, y, true_w, true_b
 
 class MLP(torch.nn.Module):
-  def __init__(self, d_in, d_hidden, d_out):
+  def __init__(self, d_in: int, d_hidden: int, d_out: int):
     super().__init__()
     # parameters as learnable tensors
     self.fc1 = torch.nn.Linear(d_in, d_hidden)
     self.act = torch.nn.ReLU()
     self.fc2 = torch.nn.Linear(d_hidden, d_out)
 
-  def forward(self, x):
+  def forward(self, x:torch.Tensor) -> torch.Tensor:
     h = self.fc1(x)
     h = self.act(h)
     y = self.fc2(h)
@@ -54,11 +55,12 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--n", type=int, default=512)
     p.add_argument("--d", type=int, default=3)
+    p.add_argument("--d_hidden", type=int, default=32)
     p.add_argument("--noise_std", type=float, default=0.1)
     p.add_argument("--lr", type=float, default=0.1)
     p.add_argument("--steps", type=int, default=300)
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--log_path", type=str, default="logs/linreg_loss.csv")
+    p.add_argument("--log_path", type=str, default="logs/mlp_loss.csv")
     args = p.parse_args()
 
     set_seed(args.seed)
@@ -67,7 +69,7 @@ def main():
         n=args.n, d=args.d, noise_std=args.noise_std, seed=args.seed
     )
 
-    model = MLP(args.d)
+    model = MLP(d_in=args.d, ad_hidden=rgs.d_hidden, d_out=1)
     opt = torch.optim.SGD(model.parameters(), lr=args.lr)
 
     log_rows = []
@@ -88,9 +90,9 @@ def main():
     # print summary
     dt = time.time() - t0
     print(f"Done in {dt:.2f}s")
-    print("learned w:", model.w.detach().view(-1).tolist())
+    
+    print(f"final loss: {float(loss.item()):.6f}")
     print("true    w:", true_w.detach().view(-1).tolist())
-    print("learned b:", float(model.b.detach().item()))
     print("true    b:", float(true_b.detach().item()))
     print(f"loss log saved to: {args.log_path}")
 
