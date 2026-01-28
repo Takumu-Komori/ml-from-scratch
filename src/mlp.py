@@ -25,11 +25,16 @@ def make_synthetic_regression(n: int, d: int, noise_std: float, seed: int):
     return X, y, true_w, true_b
 
 class MLP(torch.nn.Module):
-  def __init__(self, d_in: int, d_hidden: int, d_out: int):
+  def __init__(self, d_in: int, d_hidden: int, d_out: int, activation: str ="relu"):
     super().__init__()
     # parameters as learnable tensors
     self.fc1 = torch.nn.Linear(d_in, d_hidden)
-    self.act = torch.nn.ReLU()
+    if activation == "relu":
+        self.act = torch.nn.ReLU()
+    elif activation == "none":
+        self.act = torch.nn.Identity()
+    else:
+        raise ValueError(f"Unknown activation: {activation}")
     self.fc2 = torch.nn.Linear(d_hidden, d_out)
 
   def forward(self, x:torch.Tensor) -> torch.Tensor:
@@ -61,6 +66,7 @@ def main():
     p.add_argument("--steps", type=int, default=300)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--log_path", type=str, default="logs/mlp_loss.csv")
+    p.add_argument("--activation", type=str, default="relu", choices=["relu", "none"])
     args = p.parse_args()
 
     set_seed(args.seed)
@@ -69,7 +75,7 @@ def main():
         n=args.n, d=args.d, noise_std=args.noise_std, seed=args.seed
     )
 
-    model = MLP(d_in=args.d, d_hidden=args.d_hidden, d_out=1)
+    model = MLP(d_in=args.d, d_hidden=args.d_hidden, d_out=1, activation=args.activation)
     opt = torch.optim.SGD(model.parameters(), lr=args.lr)
 
     log_rows = []
