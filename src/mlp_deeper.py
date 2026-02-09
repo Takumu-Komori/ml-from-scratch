@@ -101,7 +101,7 @@ def main():
         loss.backward()
         opt.step()
 
-        if step % 10 == 0 or step = 1:
+        if step % 10 == 0 or step == 1:
           g_first = model.layers[0].weight.grad.norm().item()
           g_last = model.out.weight.grad.norm().item()
           log_rows.append([step, float(loss.item()), g1, gL])
