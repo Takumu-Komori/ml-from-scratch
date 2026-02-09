@@ -102,8 +102,8 @@ def main():
         opt.step()
 
         if step % 10 == 0 or step = 1:
-          g1 = grad_norm(model.fc1.weight)
-          gL = grad_norm(model.fc2.weight)
+          g_first = model.layers[0].weight.grad.norm().item()
+          g_last = model.out.weight.grad.norm().item()
           log_rows.append([step, float(loss.item()), g1, gL])
 
     save_log_csv(args.log_path, log_rows)
